@@ -1,0 +1,41 @@
+{
+  "name": "find-the-function",
+  "version": "0.0.1",
+  "description": "Find the function.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --open",
+    "build-prod": "webpack -p"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/funkia/turbine-starter.git"
+  },
+  "keywords": [
+    "turbine",
+    "starter",
+    "boilerplate"
+  ],
+  "author": "Funkia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/funkia/turbine-starter/issues"
+  },
+  "homepage": "https://github.com/funkia/turbine-starter#readme",
+  "dependencies": {
+    "@funkia/hareactive": "^0.1.2",
+    "@funkia/jabz": "0.0.23",
+    "@funkia/turbine": "^0.1.1",
+    "@types/codemirror": "0.0.55",
+    "codemirror": "^5.33.0"
+  },
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.4.1",
+    "css-loader": "^0.28.9",
+    "style-loader": "^0.19.1",
+    "typescript": "^2.6.2",
+    "webpack": "3.9.1",
+    "webpack-dev-server": "^2.9.5"
+  }
+}
