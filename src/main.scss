@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400|Source+Code+Pro");
+
+body {
+  background: #59566b;
+  font-family: "Open Sans", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  text-align: center;
+  color: #eeeeee;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  font-size: 4em;
+  font-weight: 300;
+}
+
+.btn {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.start-find-btn {
+  margin: 0.5em;
+  color: #ffffff;
+  background: rgb(175, 128, 206);
+  padding: 0.7em;
+  border-bottom: 2px solid black;
+  border-radius: 10px;
+  font-size: 1.4em;
+  font-weight: bold;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.CodeMirror {
+  font-family: "Source Code Pro", monospace;
+  border-radius: 10px;
+}

@@ -1,20 +1,22 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "es2015",
+    "module": "commonjs",
     "moduleResolution": "node",
-    "rootDir": "./src",
-    "declaration": true,
     "noImplicitAny": true,
     "sourceMap": true,
     "experimentalDecorators": true,
-    "lib": ["dom", "es5", "es2015.core", "es2015.promise", "es2015.iterable", "es2015.proxy"]
+    "lib": [
+      "dom",
+      "es5",
+      "es2017",
+      "es2015.core",
+      "es2015.promise",
+      "es2015.iterable",
+      "es2015.proxy",
+      "es2016.array.include"
+    ]
   },
-  "include": [
-    "src/**/*",
-    "test/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*", "test/**/*"],
+  "exclude": ["node_modules"]
 }

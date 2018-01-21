@@ -6,51 +6,50 @@ import * as CodeMirror from "codemirror";
 import "codemirror/lib/codemirror.css";
 import "codemirror/mode/javascript/javascript";
 import "codemirror/theme/solarized.css";
+import "codemirror/theme/material.css";
 
-const { p, div, h1, button } = elements;
+import "./main.scss";
+
+const { p, div, h1, a } = elements;
+
+const codeTextarea = document.getElementById(
+  "code-textarea"
+) as HTMLTextAreaElement;
+
+const myCodeMirror = CodeMirror.fromTextArea(codeTextarea, {
+  value: "function myScript(){return 100;}\n",
+  lineNumbers: true,
+  theme: "material",
+  mode: "javascript"
+});
+
+type ModelInput = {
+  startFind: Stream<number>;
+};
 
 type ViewInput = {
   count: Behavior<number>;
 };
 
-const myCodeMirror = CodeMirror(document.body, {
-  value: "function myScript(){return 100;}\n",
-  lineNumbers: true,
-  theme: "solarized light",
-  mode: "javascript"
-});
-
-function* counterModel({ increment, decrement }: ModelInput) {
-  const count = yield sample(
-    scan((n, m) => n + m, 0, combine(increment, decrement))
-  );
+function* findModel({ startFind }: ModelInput) {
+  yield Behavior.of(12);
+  const count = startFind;
   return { count };
 }
 
-function counterView({ count }: ViewInput) {
+function findView({ count }: ViewInput) {
   return div([
-    button({ output: { incrementClick: "click" } }, " + "),
-    " ",
-    count,
-    " ",
-    button({ output: { decrementClick: "click" } }, " - ")
-  ]).map(({ incrementClick, decrementClick }) => ({
-    increment: incrementClick.mapTo(1),
-    decrement: decrementClick.mapTo(-1)
-  }));
+    a(
+      { class: "btn start-find-btn", output: { startFind: "click" } },
+      "Find the function!"
+    )
+  ]);
 }
 
-type ModelInput = {
-  increment: Stream<number>;
-  decrement: Stream<number>;
-};
-
-const counter = modelView(counterModel, counterView);
+const findComponent = modelView(findModel, findView as any);
 
 const main = go(function*() {
-  yield h1("Find the function!");
-  yield p("Below is a counter.");
-  yield counter();
+  yield findComponent();
 });
 
 runComponent("#mount", main);
