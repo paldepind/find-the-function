@@ -25,6 +25,7 @@
   "homepage": "https://github.com/funkia/turbine-starter#readme",
   "dependencies": {
     "@funkia/hareactive": "^0.1.2",
+    "@funkia/io": "0.0.2",
     "@funkia/jabz": "0.0.23",
     "@funkia/turbine": "^0.1.1",
     "@types/chai": "^4.1.1",
