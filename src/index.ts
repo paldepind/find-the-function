@@ -1,5 +1,10 @@
-import { go, combine } from "@funkia/jabz";
-import { runComponent, elements, modelView } from "@funkia/turbine";
+import { go, combine, lift } from "@funkia/jabz";
+import {
+  runComponent,
+  elements as e,
+  modelView,
+  emptyComponent
+} from "@funkia/turbine";
 import {
   Behavior,
   Stream,
@@ -16,14 +21,13 @@ import * as CodeMirror from "codemirror";
 import * as R from "rambda";
 
 import "codemirror/lib/codemirror.css";
+import "codemirror/addon/edit/closebrackets";
 import "codemirror/mode/javascript/javascript";
 import "codemirror/theme/solarized.css";
 import "codemirror/theme/material.css";
 
 import "./main.scss";
 import { find } from "./find";
-
-const { p, div, h1, a, i } = elements;
 
 const findIO = withEffectsP(find);
 
@@ -32,16 +36,30 @@ const codeTextarea = document.getElementById(
 ) as HTMLTextAreaElement;
 
 const myCodeMirror = CodeMirror.fromTextArea(codeTextarea, {
-  lineNumbers: true,
+  lineNumbers: false,
   theme: "material",
-  mode: "javascript"
-});
+  mode: "javascript",
+  autoCloseBrackets: true
+} as any);
 
 const code = fromFunction(() => {
   return myCodeMirror.getValue();
 });
 
-type Result = string[];
+const expectedTextarea = document.getElementById(
+  "expected-textarea"
+) as HTMLTextAreaElement;
+
+const myExpectedCodeMirror = CodeMirror.fromTextArea(expectedTextarea, {
+  lineNumbers: false,
+  theme: "material",
+  mode: "javascript",
+  autoCloseBrackets: true
+} as any);
+
+const expectedString = fromFunction(() => {
+  return myExpectedCodeMirror.getValue();
+});
 
 type ModelInput = {
   startFind: Stream<number>;
@@ -52,25 +70,48 @@ type ViewInput = {
 };
 
 function* findModel({ startFind }: ModelInput) {
-  yield Now.of(12);
-  const startFindCode = snapshot(code, startFind);
+  const startInput = lift((a, b) => [a, b], code, expectedString);
+  const startFindCode = snapshot(startInput, startFind);
   const findResult = yield performStream(
-    startFindCode.map(curCode => {
-      return findIO({ R }, curCode);
+    startFindCode.map(([curCode, expected]) => {
+      return findIO({ R }, curCode, expected);
     })
   );
-  const result = yield sample(stepper("", findResult.map(r => r.toString())));
+  const result = yield sample(
+    stepper(
+      "",
+      findResult.map(results => {
+        return results.length === 0 ? "" : results[0].fnName;
+      })
+    )
+  );
   startFindCode.log();
   return { result };
 }
 
+function resultView({ fnName }) {
+  return e.div([
+    e.div({ class: "function-name" }, "R." + fnName),
+    e.a(
+      { attrs: { href: `http://ramdajs.com/docs/#${fnName}` } },
+      "Go to documentation"
+    )
+  ]);
+}
+
 function findView({ result }: ViewInput) {
-  return div([
-    a({ class: "btn start-find-btn", output: { startFind: "click" } }, [
-      i({ class: "material-icons md-24" }, "search"),
+  return e.div([
+    e.a({ class: "btn start-find-btn", output: { startFind: "click" } }, [
+      e.i({ class: "material-icons md-24" }, "search"),
       "Find the function!"
     ]),
-    div(result)
+    result.map(fnName => {
+      if (fnName === "") {
+        return emptyComponent;
+      } else {
+        return e.div({ class: "result" }, [resultView({ fnName })]);
+      }
+    })
   ]);
 }
 
