@@ -1,4 +1,4 @@
-import { go, combine, lift } from "@funkia/jabz";
+import { go, combine, lift, just, nothing, Maybe } from "@funkia/jabz";
 import {
   runComponent,
   elements as e,
@@ -27,7 +27,7 @@ import "codemirror/theme/solarized.css";
 import "codemirror/theme/material.css";
 
 import "./main.scss";
-import { find } from "./find";
+import { find, Result } from "./find";
 
 const findIO = withEffectsP(find);
 
@@ -35,12 +35,42 @@ const codeTextarea = document.getElementById(
   "code-textarea"
 ) as HTMLTextAreaElement;
 
-const myCodeMirror = CodeMirror.fromTextArea(codeTextarea, {
+const codeMirrorOptions: any = {
   lineNumbers: false,
   theme: "material",
   mode: "javascript",
-  autoCloseBrackets: true
-} as any);
+  autoCloseBrackets: true,
+  extraKeys: { Tab: false }
+};
+
+function searchOverlay(query, caseInsensitive) {
+  if (typeof query == "string")
+    query = new RegExp(
+      query.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"),
+      caseInsensitive ? "gi" : "g"
+    );
+  else if (!query.global)
+    query = new RegExp(query.source, query.ignoreCase ? "gi" : "g");
+
+  return {
+    token: function(stream) {
+      query.lastIndex = stream.pos;
+      var match = query.exec(stream.string);
+      if (match && match.index == stream.pos) {
+        stream.pos += match[0].length || 1;
+        return "searching";
+      } else if (match) {
+        stream.pos = match.index;
+      } else {
+        stream.skipToEnd();
+      }
+    }
+  };
+}
+
+const myCodeMirror = CodeMirror.fromTextArea(codeTextarea, codeMirrorOptions);
+
+myCodeMirror.addOverlay(searchOverlay("x", false));
 
 const code = fromFunction(() => {
   return myCodeMirror.getValue();
@@ -50,12 +80,10 @@ const expectedTextarea = document.getElementById(
   "expected-textarea"
 ) as HTMLTextAreaElement;
 
-const myExpectedCodeMirror = CodeMirror.fromTextArea(expectedTextarea, {
-  lineNumbers: false,
-  theme: "material",
-  mode: "javascript",
-  autoCloseBrackets: true
-} as any);
+const myExpectedCodeMirror = CodeMirror.fromTextArea(
+  expectedTextarea,
+  codeMirrorOptions
+);
 
 const expectedString = fromFunction(() => {
   return myExpectedCodeMirror.getValue();
@@ -66,7 +94,7 @@ type ModelInput = {
 };
 
 type ViewInput = {
-  result: Behavior<string>;
+  result: Behavior<Maybe<Result[]>>;
 };
 
 function* findModel({ startFind }: ModelInput) {
@@ -77,14 +105,7 @@ function* findModel({ startFind }: ModelInput) {
       return findIO({ R }, curCode, expected);
     })
   );
-  const result = yield sample(
-    stepper(
-      "",
-      findResult.map(results => {
-        return results.length === 0 ? "" : results[0].fnName;
-      })
-    )
-  );
+  const result = yield sample(stepper(nothing, findResult.map(just)));
   startFindCode.log();
   return { result };
 }
@@ -105,12 +126,21 @@ function findView({ result }: ViewInput) {
       e.i({ class: "material-icons md-24" }, "search"),
       "Find the function!"
     ]),
-    result.map(fnName => {
-      if (fnName === "") {
-        return emptyComponent;
-      } else {
-        return e.div({ class: "result" }, [resultView({ fnName })]);
-      }
+    result.map((res) => {
+      return res.match({
+        nothing: () => emptyComponent,
+        just: (aResult) => {
+          if (aResult.length === 0) {
+            return e.div({ class: "result-error" }, [
+              "No result found"
+            ]);
+          } else {
+            return e.div({ class: "result" }, [
+              resultView({ fnName: aResult[0].fnName })
+            ]);
+          }
+        }
+      });
     })
   ]);
 }

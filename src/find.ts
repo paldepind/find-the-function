@@ -1,8 +1,8 @@
 import * as R from "rambda";
 
-type Library = Record<string, Function>;
+export type Library = Record<string, Function>;
 
-type Result = {
+export type Result = {
   library: string;
   fnName: string;
   fn: Function;
