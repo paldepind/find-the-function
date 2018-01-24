@@ -15,13 +15,14 @@ export function find<A extends Library>(
 ): Promise<Result[]> {
   const expected = (undefined, eval)(expectedString);
   for (let [libName, library] of Object.entries(libraries)) {
+    const fn = new Function(
+      "x",
+      libName,
+      "return " + code
+    );
     for (let [fnName, libFn] of Object.entries(library)) {
-      const fn = new Function(
-        libName,
-        "return " + code.replace("x", "R." + fnName)
-      );
       try {
-        const result = fn(library);
+        const result = fn(libFn, library);
         if (R.equals(result, expected)) {
           return Promise.resolve([{ library: libName, fnName, fn: libFn }]);
         }
