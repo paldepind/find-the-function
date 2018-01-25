@@ -18,7 +18,7 @@ import {
 } from "@funkia/hareactive";
 import { withEffectsP } from "@funkia/io";
 import * as CodeMirror from "codemirror";
-import * as R from "rambda";
+import * as R from "ramda";
 
 import "codemirror/lib/codemirror.css";
 import "codemirror/addon/edit/closebrackets";
