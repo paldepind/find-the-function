@@ -122,18 +122,19 @@ function resultView({ fnName }) {
 
 function findView({ result }: ViewInput) {
   return e.div([
-    e.a({ class: "btn start-find-btn", output: { startFind: "click" } }, [
-      e.i({ class: "material-icons md-24" }, "search"),
-      "Find the function!"
-    ]),
+    e.button(
+      {
+        class: "btn start-find-btn",
+        output: { startFind: "click" }
+      },
+      [e.i({ class: "material-icons md-24" }, "search"), "Find the function!"]
+    ),
     result.map((res) => {
       return res.match({
         nothing: () => emptyComponent,
         just: (aResult) => {
           if (aResult.length === 0) {
-            return e.div({ class: "result-error" }, [
-              "No result found"
-            ]);
+            return e.div({ class: "result-error" }, ["No result found"]);
           } else {
             return e.div({ class: "result" }, [
               resultView({ fnName: aResult[0].fnName })
