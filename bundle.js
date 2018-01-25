@@ -19500,18 +19500,16 @@ function resultView({ fnName }) {
 }
 function findView({ result }) {
     return turbine_1.elements.div([
-        turbine_1.elements.a({ class: "btn start-find-btn", output: { startFind: "click" } }, [
-            turbine_1.elements.i({ class: "material-icons md-24" }, "search"),
-            "Find the function!"
-        ]),
+        turbine_1.elements.button({
+            class: "btn start-find-btn",
+            output: { startFind: "click" }
+        }, [turbine_1.elements.i({ class: "material-icons md-24" }, "search"), "Find the function!"]),
         result.map((res) => {
             return res.match({
                 nothing: () => turbine_1.emptyComponent,
                 just: (aResult) => {
                     if (aResult.length === 0) {
-                        return turbine_1.elements.div({ class: "result-error" }, [
-                            "No result found"
-                        ]);
+                        return turbine_1.elements.div({ class: "result-error" }, ["No result found"]);
                     }
                     else {
                         return turbine_1.elements.div({ class: "result" }, [
@@ -30164,7 +30162,7 @@ exports = module.exports = __webpack_require__(54)(false);
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400|Source+Code+Pro);", ""]);
 
 // module
-exports.push([module.i, "body {\n  background: #59566b;\n  color: #eeeeee;\n  font-family: \"Open Sans\", sans-serif;\n  display: flex;\n  flex-direction: column;\n  align-items: center; }\n\ncontainer {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  width: 780px; }\n\n.title {\n  text-align: center;\n  color: #eeeeee;\n  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);\n  font-size: 3.8em;\n  margin: 0.6em 0 0.4em;\n  font-weight: 300; }\n\n.fn {\n  color: #dfa1ff;\n  font-size: 0.9em; }\n\n.btn {\n  display: inline-block;\n  cursor: pointer; }\n\n.start-find-btn {\n  margin: 1.3em;\n  color: #ffffff;\n  background: #af80ce;\n  padding: 0.9em;\n  border-bottom: 2px solid #725386;\n  border-radius: 10px;\n  font-size: 24px;\n  font-weight: bold;\n  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); }\n  .start-find-btn:hover {\n    background: #c390e6; }\n\ncode {\n  font-family: \"Source Code Pro\", monospace;\n  background: #6f6f6f; }\n\n.CodeMirror {\n  font-size: 1.1em;\n  font-family: \"Source Code Pro\", monospace;\n  border-radius: 10px;\n  height: auto;\n  width: 780px;\n  max-width: 100%;\n  padding: 0.9em;\n  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);\n  border: 6px solid #3e3c4b; }\n\n.cm-searching {\n  background-color: rgba(255, 255, 255, 0.2); }\n\n.function-name {\n  font-size: 1.2em; }\n\n.result {\n  background: #3d9c1a;\n  padding: 0.9em;\n  border-radius: 10px;\n  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);\n  border: 6px solid #46b21e; }\n  .result a {\n    color: #c0ff8e; }\n\n.result-error {\n  background: #b40000;\n  padding: 0.9em;\n  border-radius: 10px;\n  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);\n  border: 6px solid #ce0000; }\n\n/* Rules for sizing the icon. */\n.material-icons.md-18 {\n  font-size: 18px; }\n\n.material-icons.md-24 {\n  font-size: 24px; }\n\n.material-icons.md-36 {\n  font-size: 36px; }\n\n.material-icons.md-48 {\n  font-size: 48px; }\n\n/* Rules for using icons as black on a light background. */\n.material-icons.md-dark {\n  color: rgba(0, 0, 0, 0.54); }\n\n.material-icons.md-dark.md-inactive {\n  color: rgba(0, 0, 0, 0.26); }\n\n/* Rules for using icons as white on a dark background. */\n.material-icons.md-light {\n  color: white; }\n\n.material-icons.md-light.md-inactive {\n  color: rgba(255, 255, 255, 0.3); }\n", ""]);
+exports.push([module.i, "body {\n  background: #59566b;\n  color: #eeeeee;\n  font-family: \"Open Sans\", sans-serif;\n  display: flex;\n  flex-direction: column;\n  align-items: center; }\n\ncontainer {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  width: 780px; }\n\n.title {\n  text-align: center;\n  color: #eeeeee;\n  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);\n  font-size: 3.8em;\n  margin: 0.6em 0 0.4em;\n  font-weight: 300; }\n\n.fn {\n  color: #dfa1ff;\n  font-size: 0.9em; }\n\n.btn {\n  display: inline-block;\n  cursor: pointer;\n  font-family: \"Open Sans\", sans-serif;\n  border: 0; }\n\n.start-find-btn {\n  margin: 1.3em;\n  color: #ffffff;\n  background: #af80ce;\n  padding: 0.9em;\n  border-bottom: 2px solid #725386;\n  border-radius: 10px;\n  font-size: 24px;\n  font-weight: bold;\n  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); }\n  .start-find-btn:hover {\n    background: #c390e6; }\n\ncode {\n  font-family: \"Source Code Pro\", monospace;\n  background: #6f6f6f; }\n\n.CodeMirror {\n  font-size: 1.1em;\n  font-family: \"Source Code Pro\", monospace;\n  border-radius: 10px;\n  height: auto;\n  width: 780px;\n  max-width: 100%;\n  padding: 0.9em;\n  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);\n  border: 6px solid #3e3c4b; }\n\n.cm-searching {\n  background-color: rgba(255, 255, 255, 0.2); }\n\n.function-name {\n  font-size: 1.2em; }\n\n.result {\n  background: #3d9c1a;\n  padding: 0.9em;\n  border-radius: 10px;\n  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);\n  border: 6px solid #46b21e; }\n  .result a {\n    color: #c0ff8e; }\n\n.result-error {\n  background: #b40000;\n  padding: 0.9em;\n  border-radius: 10px;\n  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);\n  border: 6px solid #ce0000; }\n\n/* Rules for sizing the icon. */\n.material-icons.md-18 {\n  font-size: 18px; }\n\n.material-icons.md-24 {\n  font-size: 24px; }\n\n.material-icons.md-36 {\n  font-size: 36px; }\n\n.material-icons.md-48 {\n  font-size: 48px; }\n\n/* Rules for using icons as black on a light background. */\n.material-icons.md-dark {\n  color: rgba(0, 0, 0, 0.54); }\n\n.material-icons.md-dark.md-inactive {\n  color: rgba(0, 0, 0, 0.26); }\n\n/* Rules for using icons as white on a dark background. */\n.material-icons.md-light {\n  color: white; }\n\n.material-icons.md-light.md-inactive {\n  color: rgba(255, 255, 255, 0.3); }\n", ""]);
 
 // exports
 
