@@ -10,7 +10,8 @@
 <body>
   <container>
     <h1 class="title">Find
-      <span class="fn">the</span> Function</h1>
+      <span class="fn">the</span> Function
+    </h1>
     <p style="font-size: 1.2em">
       Easily find any Ramda function. Specify its input and expected output. Any function satisfying the requirements will be found.
     </p>
@@ -19,12 +20,12 @@
       <code>x</code> for a function you don't know the name of.
     </p>
     <!-- <h2>Expression</h2> -->
-    <textarea autofocus id="code-textarea"></textarea>
+    <textarea autofocus id="code-textarea" placeholder="R.reduce(x, 0, [1, 2, 3, 4])"></textarea>
     <!-- <h2>Expected result</h2> -->
     <p>
       What is the desired result from the unknown function?
     </p>
-    <textarea id="expected-textarea"></textarea>
+    <textarea id="expected-textarea" placeholder="10"></textarea>
     <!-- Mount point for the application -->
     <div id="mount"></div>
   </container>

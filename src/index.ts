@@ -22,6 +22,7 @@ import * as R from "ramda";
 
 import "codemirror/lib/codemirror.css";
 import "codemirror/addon/edit/closebrackets";
+import "codemirror/addon/display/placeholder";
 import "codemirror/mode/javascript/javascript";
 import "codemirror/theme/solarized.css";
 import "codemirror/theme/material.css";
@@ -129,10 +130,10 @@ function findView({ result }: ViewInput) {
       },
       [e.i({ class: "material-icons md-24" }, "search"), "Find the function!"]
     ),
-    result.map((res) => {
+    result.map(res => {
       return res.match({
         nothing: () => emptyComponent,
-        just: (aResult) => {
+        just: aResult => {
           if (aResult.length === 0) {
             return e.div({ class: "result-error" }, ["No result found"]);
           } else {
