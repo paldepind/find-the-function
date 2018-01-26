@@ -121,6 +121,46 @@ function resultView({ fnName }) {
   ]);
 }
 
+type ExampleInput = {
+  expression: string;
+  output: string;
+  finds: string;
+};
+
+function codeExample({ expression, output, finds }: ExampleInput) {
+  return e.div({ class: "example" }, [
+    e.code(expression),
+    " and ",
+    e.code(output),
+    " finds the function ",
+    e.code(finds)
+  ]);
+}
+
+const example1 = codeExample({
+  expression: "x(2, 3)",
+  output: "5",
+  finds: "R.add"
+});
+
+const example2 = codeExample({
+  expression: "x(R.add, 0, [1, 2, 3])",
+  output: "[0, 1, 3, 6]",
+  finds: "R.scan"
+});
+
+const example3 = codeExample({
+  expression: "R.reduce(x, 0, [1, 9, 3, 4])",
+  output: "9",
+  finds: "R.max"
+});
+
+const example4 = codeExample({
+  expression: "x(n => n % 2 === 0, [0, 2, 3, 4, 5])",
+  output: "[0, 2]",
+  finds: "R.takeWhile"
+});
+
 function findView({ result }: ViewInput) {
   return e.div([
     e.button(
@@ -132,7 +172,15 @@ function findView({ result }: ViewInput) {
     ),
     result.map(res => {
       return res.match({
-        nothing: () => emptyComponent,
+        nothing: () => [
+          e.h2("Examples"),
+          e.div({ class: "examples" }, [
+            example1,
+            example2,
+            example3,
+            example4
+          ])
+        ]
         just: aResult => {
           if (aResult.length === 0) {
             return e.div({ class: "result-error" }, ["No result found"]);

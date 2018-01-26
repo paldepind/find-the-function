@@ -53,9 +53,26 @@ container {
   }
 }
 
+#mount > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+pre {
+  background: #263238;
+  border-radius: 3px;
+  padding: 0.5em;
+  code {
+    background: transparent;
+  }
+}
+
 code {
   font-family: "Source Code Pro", monospace;
-  background: #6f6f6f;
+  padding: 0.1em 0.2em;
+  background: #263238;
+  border-radius: 3px;
 }
 
 .CodeMirror {
@@ -95,6 +112,14 @@ code {
   border-radius: 10px;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
   border: 6px solid lighten(#b40000, 5%);
+}
+
+.example {
+  padding: 1em;
+  border-radius: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+  background: #3e3c4b;
+  margin-bottom: 1em;
 }
 
 /* Rules for sizing the icon. */
