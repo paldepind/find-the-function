@@ -104,6 +104,15 @@ code {
   a {
     color: #c0ff8e;
   }
+  // Animation
+  transition: opacity 0.1s ease-in,
+    transform 0.2s cubic-bezier(.17,.67,.76,1.42) 0.1s;
+  opacity: 1;
+  transform: scale(1);
+  &.result-in {
+    opacity: 0;
+    transform: scale(0.8);
+  }
 }
 
 .result-error {

@@ -44,7 +44,7 @@ const codeMirrorOptions: any = {
   extraKeys: { Tab: false }
 };
 
-function searchOverlay(query, caseInsensitive) {
+function searchOverlay(query: any, caseInsensitive: boolean) {
   if (typeof query == "string")
     query = new RegExp(
       query.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"),
@@ -112,7 +112,7 @@ function* findModel({ startFind }: ModelInput) {
 }
 
 function resultView({ fnName }) {
-  return e.div([
+  return e.div({ class: "result", entry: { class: "result-in" } }, [
     e.div({ class: "function-name" }, "R." + fnName),
     e.a(
       { attrs: { href: `http://ramdajs.com/docs/#${fnName}` } },
@@ -170,24 +170,17 @@ function findView({ result }: ViewInput) {
       },
       [e.i({ class: "material-icons md-24" }, "search"), "Find the function!"]
     ),
-    result.map(res => {
+    result.map((res) => {
       return res.match({
         nothing: () => [
           e.h2("Examples"),
-          e.div({ class: "examples" }, [
-            example1,
-            example2,
-            example3,
-            example4
-          ])
-        ]
-        just: aResult => {
+          e.div({ class: "examples" }, [example1, example2, example3, example4])
+        ],
+        just: (aResult) => {
           if (aResult.length === 0) {
             return e.div({ class: "result-error" }, ["No result found"]);
           } else {
-            return e.div({ class: "result" }, [
-              resultView({ fnName: aResult[0].fnName })
-            ]);
+            return resultView({ fnName: aResult[0].fnName });
           }
         }
       });
